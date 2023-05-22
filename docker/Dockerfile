@@ -16,6 +16,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Update python
 RUN python3 -m pip install --upgrade --no-cache-dir pip setuptools wheel && \
-    python3 -m pip install hatch
+    python3 -m pip install --no-cache-dir hatch
+
+COPY cli /src/cli
+
+# Install toml CLI
+RUN cd /src/cli && pip3 install -e .
 
 CMD ["/bin/bash"]

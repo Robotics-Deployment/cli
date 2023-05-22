@@ -7,16 +7,15 @@ name = "cli"
 dynamic = ["version"]
 description = 'Robotics Deployment CLI interface'
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = "MIT"
 keywords = []
 authors = [
-  { name = "U.N. Owen", email = "void@some.where" },
+  { name = "Deniz Hofmeister", email = "" },
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
@@ -24,12 +23,12 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = []
+dependencies = ["dulwich"]
 
 [project.urls]
-Documentation = "https://github.com/unknown/cli#readme"
-Issues = "https://github.com/unknown/cli/issues"
-Source = "https://github.com/unknown/cli"
+Documentation = "https://github.com/Robotics-Deployment/cli#readme"
+Issues = "https://github.com/Robotics-Deployment/cli/issues"
+Source = "https://github.com/Robotics-Deployment/cli"
 
 [tool.hatch.version]
 path = "src/cli/__about__.py"
@@ -37,7 +36,7 @@ path = "src/cli/__about__.py"
 [tool.hatch.envs.default]
 dependencies = [
   "coverage[toml]>=6.5",
-  "pytest",
+  "pytest"
 ]
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
@@ -52,7 +51,7 @@ cov = [
 ]
 
 [[tool.hatch.envs.all.matrix]]
-python = ["3.7", "3.8", "3.9", "3.10", "3.11"]
+python = ["3.8", "3.9", "3.10", "3.11"]
 
 [tool.hatch.envs.lint]
 detached = true
