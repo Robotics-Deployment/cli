@@ -18,9 +18,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN python3 -m pip install --upgrade --no-cache-dir pip setuptools wheel && \
     python3 -m pip install --no-cache-dir hatch
 
-COPY cli /src/cli
+COPY rdcli /src/rdcli
 
 # Install toml CLI
-RUN cd /src/cli && pip3 install -e .
+RUN cd /src/rdcli && pip3 install -e .
 
 CMD ["/bin/bash"]

@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "cli"
+name = "rdcli"
 dynamic = ["version"]
 description = 'Robotics Deployment CLI interface'
 readme = "README.md"
@@ -31,10 +31,10 @@ Issues = "https://github.com/Robotics-Deployment/cli/issues"
 Source = "https://github.com/Robotics-Deployment/cli"
 
 [tool.hatch.version]
-path = "src/cli/__about__.py"
+path = "src/rdcli/__about__.py"
 
 [project.scripts]
-rdcli = "cli.main:main"
+rdcli = "rdcli.main:main"
 
 [tool.hatch.envs.default]
 dependencies = [
@@ -64,7 +64,7 @@ dependencies = [
   "ruff>=0.0.243",
 ]
 [tool.hatch.envs.lint.scripts]
-typing = "mypy --install-types --non-interactive {args:src/cli tests}"
+typing = "mypy --install-types --non-interactive {args:src/rdcli tests}"
 style = [
   "ruff {args:.}",
   "black --check --diff {args:.}",
@@ -130,7 +130,7 @@ unfixable = [
 ]
 
 [tool.ruff.isort]
-known-first-party = ["cli"]
+known-first-party = ["rdcli"]
 
 [tool.ruff.flake8-tidy-imports]
 ban-relative-imports = "all"
@@ -140,16 +140,16 @@ ban-relative-imports = "all"
 "tests/**/*" = ["PLR2004", "S101", "TID252"]
 
 [tool.coverage.run]
-source_pkgs = ["cli", "tests"]
+source_pkgs = ["rdcli", "tests"]
 branch = true
 parallel = true
 omit = [
-  "src/cli/__about__.py",
+  "src/rdcli/__about__.py",
 ]
 
 [tool.coverage.paths]
-cli = ["src/cli", "*/cli/src/cli"]
-tests = ["tests", "*/cli/tests"]
+rdcli = ["src/rdcli", "*/rdcli/src/rdcli"]
+tests = ["tests", "*/rdcli/tests"]
 
 [tool.coverage.report]
 exclude_lines = [
