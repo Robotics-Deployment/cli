@@ -33,6 +33,9 @@ Source = "https://github.com/Robotics-Deployment/cli"
 [tool.hatch.version]
 path = "src/cli/__about__.py"
 
+[project.scripts]
+rdcli = "cli.main:main"
+
 [tool.hatch.envs.default]
 dependencies = [
   "coverage[toml]>=6.5",
