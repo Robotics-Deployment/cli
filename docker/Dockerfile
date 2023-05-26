@@ -3,19 +3,18 @@ LABEL authors="Deniz Hofmeister"
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3-pip \
+    curl \
     python3-colcon-common-extensions \
+    git \
+    build-essential \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
-# Update python
-RUN python3 -m pip install --upgrade --no-cache-dir pip && \
-    python3 -m pip install --no-cache-dir hatch
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-COPY rdcli /src/rdcli
+ENV PATH="/root/.cargo/bin:${PATH}"
 
-# Install toml CLI
-RUN cd /src/rdcli && python3 -m pip install -e .
+COPY rdcli /project/src/rdcli
 
 WORKDIR /project
 

@@ -1,0 +1,28 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "Robotics-Deployment",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"build": {
+		"dockerfile": "../docker/Dockerfile",
+		"context": "../src"
+	},
+	"mounts": [
+		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind,consistency=cached",
+		"source=/usr/bin/docker,target=/usr/bin/docker,type=bind,consistency=cached"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"rust-lang.rust-analyzer",
+				"GitHub.copilot",
+				"vadimcn.vscode-lldb"
+			],
+			"settings": {
+				"rust-client.disableDiagnostics": true
+			}
+		}
+	},
+	"workspaceMount": "source=${localWorkspaceFolder},target=/rd,type=bind,consistency=cached",
+	"workspaceFolder": "/rd"
+}
