@@ -1,14 +1,17 @@
-fn main() {
-    println!("Hello, world!");
+use tide::Request;
 
-    let mut x = 5;
-    println!("The value of x is: {}", x);
-    x = 6;
-    println!("The value of x is: {}", x);
+struct 
 
-    let y = 5;
-    let y = y + 1;
-    let y = y * 2;
-    println!("The value of y is: {}", y);
-    
+#[tokio::main]
+async fn main() -> tide::Result<()> {
+    let mut app = tide::new();
+    app.at("/webhook").post(webhook_endpoint);
+    app.listen("127.0.0.1:8080").await?;
+    Ok(())
+}
+
+async fn webhook_endpoint(mut req: Request<()>) -> tide::Result {
+    let body: serde_json::Value = req.body_json().await?;
+
+    Ok("OK".into())
 }
