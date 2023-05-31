@@ -1,7 +1,5 @@
 use tide::Request;
 
-struct 
-
 #[tokio::main]
 async fn main() -> tide::Result<()> {
     let mut app = tide::new();
