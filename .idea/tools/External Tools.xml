@@ -3,7 +3,7 @@
     <exec>
       <option name="COMMAND" value="cargo" />
       <option name="PARAMETERS" value="build" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/repos/client/src/rdcli" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/repos/client/src/client" />
     </exec>
   </tool>
 </toolSet>
