@@ -4,23 +4,61 @@ use initialize::init::init;
 mod build;
 use build::build::build;
 
+mod verify;
+use verify::verify::verify;
+
+mod test;
+use test::test::test;
+
 use clap::Parser;
 
 #[derive(Parser, Debug)]
-struct Args {
-    #[arg(short, long)]
-    init: Option<String>,
+enum Command {
+    Init,
+    Build,
+    Verify,
+    Test,
+}
 
-    #[arg(short, long)]
-    build: Option<String>,
+#[derive(Parser, Debug)]
+struct Args {
+    #[clap(short, long)]
+    verify: bool,
+
+    #[clap(short, long)]
+    init: bool,
+
+    #[clap(short, long)]
+    build: bool,
+
+    #[clap(short, long)]
+    test: bool,
+}
+
+impl Args {
+    fn command(&self) -> Option<Command> {
+        if self.init {
+            Some(Command::Init)
+        } else if self.build {
+            Some(Command::Build)
+        } else if self.verify {
+            Some(Command::Verify)
+        } else if self.test {
+            Some(Command::Test)
+        } else {
+            None
+        }
+    }
 }
 
 fn main() {
     let args = Args::parse();
 
-    if let Some(_) = args.init {
-        init();
-    } else if let Some(_) = args.build {
-        build();
+    match args.command() {
+        Some(Command::Init) => init(),
+        Some(Command::Build) => build(),
+        Some(Command::Verify) => verify(),
+        Some(Command::Test) => test(),
+        None => println!("No command specified."),
     }
 }
