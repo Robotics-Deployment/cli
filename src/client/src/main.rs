@@ -1,15 +1,26 @@
-use tide::Request;
+mod initialize;
+use initialize::init::init;
 
-#[tokio::main]
-async fn main() -> tide::Result<()> {
-    let mut app = tide::new();
-    app.at("/webhook").post(webhook_endpoint);
-    app.listen("127.0.0.1:8080").await?;
-    Ok(())
+mod build;
+use build::build::build;
+
+use clap::Parser;
+
+#[derive(Parser, Debug)]
+struct Args {
+    #[arg(short, long)]
+    init: Option<String>,
+
+    #[arg(short, long)]
+    build: Option<String>,
 }
 
-async fn webhook_endpoint(mut req: Request<()>) -> tide::Result {
-    let body: serde_json::Value = req.body_json().await?;
+fn main() {
+    let args = Args::parse();
 
-    Ok("OK".into())
+    if let Some(_) = args.init {
+        init();
+    } else if let Some(_) = args.build {
+        build();
+    }
 }

@@ -23,6 +23,6 @@
 			}
 		}
 	},
-	"workspaceMount": "source=${localWorkspaceFolder},target=/rd,type=bind,consistency=cached",
-	"workspaceFolder": "/rd"
+	"workspaceMount": "source=${localWorkspaceFolder}/src/client,target=/client,type=bind,consistency=cached",
+	"workspaceFolder": "/client"
 }

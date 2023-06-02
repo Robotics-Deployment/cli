@@ -8,20 +8,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     build-essential \
     gdb \
+    libssl-dev \
+    pkg-config \
     openssh-server \
     gdbserver \
+    apt-transport-https  \
+    ca-certificates curl  \
+    software-properties-common \
+    rsync \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    docker-ce-cli \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
 ENV PATH="/root/.cargo/bin:${PATH}"
-COPY client /client/src/client
-WORKDIR /client/src/client
-
-RUN cargo build
 
 COPY entrypoint.sh /client/src/entrypoint.sh
+
 RUN mkdir /var/run/sshd
 
 RUN echo 'root:password' | chpasswd

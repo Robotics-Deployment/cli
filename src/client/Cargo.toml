@@ -1,9 +1,8 @@
 [package]
-name = "robotic-deployment-client"
+name = "client"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-tide = "^0.16"
-tokio = { version = "^1.0", features = ["full"] }
-serde_json = { version = "^1.0"}
+git2 = { version = "^0.17" }
+clap = { version = "^4.3.0", features = ["derive"] }
