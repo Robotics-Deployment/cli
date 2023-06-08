@@ -1,64 +1,41 @@
-mod initialize;
-use initialize::init::init;
-
-mod build;
-use build::build::build;
-
-mod verify;
-use verify::verify::verify;
-
-mod test;
-use test::test::test;
-
-use clap::Parser;
-
-#[derive(Parser, Debug)]
-enum Command {
-    Init,
-    Build,
-    Verify,
-    Test,
-}
-
-#[derive(Parser, Debug)]
-struct Args {
-    #[clap(short, long)]
-    verify: bool,
-
-    #[clap(short, long)]
-    init: bool,
-
-    #[clap(short, long)]
-    build: bool,
-
-    #[clap(short, long)]
-    test: bool,
-}
-
-impl Args {
-    fn command(&self) -> Option<Command> {
-        if self.init {
-            Some(Command::Init)
-        } else if self.build {
-            Some(Command::Build)
-        } else if self.verify {
-            Some(Command::Verify)
-        } else if self.test {
-            Some(Command::Test)
-        } else {
-            None
-        }
-    }
-}
+use clap::{
+    Arg, ArgAction, Command, builder::PossibleValue,
+};
 
 fn main() {
-    let args = Args::parse();
-
-    match args.command() {
-        Some(Command::Init) => init(),
-        Some(Command::Build) => build(),
-        Some(Command::Verify) => verify(),
-        Some(Command::Test) => test(),
-        None => println!("No command specified."),
-    }
+    let m = Command::new("Robotics Deployment CLI")
+        .author("Deniz Hofmeister, deniz@roboticsdeployment.com")
+        .version("0.1.0")
+        .about("A CLI for ROS2-containerized deployments, backups and testing.")
+        .after_help("Clone, build and test locally, then build, test and compose in the cloud and finally deploy to your fleet.")
+        .subcommands([
+            Command::new("build")
+                .about("Builds the project locally")
+                .arg(
+                    Arg::new("remote")
+                        .long("remote")
+                        .help("Build on a remote machine")
+                        .action(ArgAction::SetTrue),
+                ),
+            Command::new("clone")
+                .about("Git clone the dockerized ROS2 [Python/C++] package template")
+                .arg(
+                    Arg::new("overwrite")
+                        .long("overwrite")
+                        .help("overwrite existing files")
+                        .action(ArgAction::SetTrue),
+                )
+                .arg(
+                    Arg::new("language")
+                        .long("language")
+                        .short('l')
+                        .value_parser([
+                            PossibleValue::new("python").help("Python Package Template"),
+                            PossibleValue::new("cpp").help("C++ Package Template"),
+                        ])
+                        .default_value("cpp"),
+                ),
+            Command::new("demo")
+        ])
+        .get_matches();
 }

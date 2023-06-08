@@ -1,7 +1,6 @@
 FROM ros:humble-ros-core-jammy
 LABEL authors="Deniz Hofmeister"
 
-# Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     python3-colcon-common-extensions \
@@ -13,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-server \
     gdbserver \
     apt-transport-https  \
-    ca-certificates curl  \
+    ca-certificates  \
     software-properties-common \
     rsync \
     && rm -rf /var/lib/apt/lists/* \

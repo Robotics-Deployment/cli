@@ -19,7 +19,7 @@
                     "kind": "bin"
                 }
             },
-            "args": [],
+            "args": ["-c", "--overwrite"],
             "cwd": "${workspaceFolder}",
             "initCommands": [
                 "settings set target.disable-aslr false"
