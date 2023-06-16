@@ -6,7 +6,7 @@ fn main() {
     let m = Command::new("Robotics Deployment CLI")
         .author("Deniz Hofmeister, deniz@roboticsdeployment.com")
         .version("0.1.0")
-        .about("A CLI for ROS2-containerized deployments, backups and testing.")
+        .about("A CLI for ROS2-containerized building, testing and deployment")
         .after_help("Clone, build and test locally, then build, test and compose in the cloud and finally deploy to your fleet.")
         .subcommands([
             Command::new("build")
@@ -35,7 +35,19 @@ fn main() {
                         ])
                         .default_value("cpp"),
                 ),
-            Command::new("demo")
+            Command::new("test")
+                .about("Runs colcon test on the package"),
+            Command::new("run")
+                .arg(
+                    Arg::new("language")
+                        .long("language")
+                        .short('l')
+                        .value_parser([
+                            PossibleValue::new("python").help("Python Package Template"),
+                            PossibleValue::new("cpp").help("C++ Package Template"),
+                        ])
+                        .default_value("cpp"),
+                ),
         ])
         .get_matches();
 }

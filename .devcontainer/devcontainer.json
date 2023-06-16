@@ -24,5 +24,6 @@
 		}
 	},
 	"workspaceMount": "source=${localWorkspaceFolder}/src/client,target=/client,type=bind,consistency=cached",
-	"workspaceFolder": "/client"
+	"workspaceFolder": "/client",
+	"containerEnv": {"PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/client/target/debug:/client/target/release"}
 }

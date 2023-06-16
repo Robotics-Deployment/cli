@@ -19,13 +19,14 @@
                     "kind": "bin"
                 }
             },
-            "args": ["-c", "--overwrite"],
+            "args": ["-h"],
             "cwd": "${workspaceFolder}",
             "initCommands": [
                 "settings set target.disable-aslr false"
             ],
             "env": {
-                "RUST_BACKTRACE": "1"
+                "RUST_BACKTRACE": "1",
+                "PATH": "${workspaceFolder}/target/debug:${env:PATH}"
             }
         },
         {
@@ -39,7 +40,7 @@
                     "--bin=client",
                     "--package=client"
                 ],
-                "filter": {
+                "filter": { 
                     "name": "client",
                     "kind": "bin"
                 }
@@ -50,7 +51,8 @@
                 "settings set target.disable-aslr false"
             ],
             "env": {
-                "RUST_BACKTRACE": "1"
+                "RUST_BACKTRACE": "1",
+                "PATH": "${workspaceFolder}/target/debug:${env:PATH}"
             }
         }
     ]
