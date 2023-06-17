@@ -1,37 +1,35 @@
 pub mod clone {
-    use clap::Parser;
-    use git2::Repository;
-    use std::env;
-    use std::io::Write;
+    use git2::build::RepoBuilder;
+    use std::{io::Write, path::Path};
 
-    #[derive(Parser, Debug)]
-    pub struct CloneArgs {
-        pub overwrite: bool,
-    }
 
-    pub fn clone() {
-        let url = "https://github.com/Robotics-Deployment/template.git";
-        let path = env::current_dir().expect("Failed to get current directory");
-        let package = path.join("package");
-
-        // if args.overwrite {
-        //     match std::fs::remove_dir_all(package.clone()) {
-        //         Ok(_) => println!("Removed old package directory"),
-        //         Err(e) => {
-        //             let _ = writeln!(
-        //                 std::io::stderr(),
-        //                 "Failed to remove old package directory: {}",
-        //                 e
-        //             );
-        //         }
-        //     }
-        // }
-
-        match Repository::clone(url, package) {
-            Ok(_) => println!("Cloned template repository to {:?}", url),
-            Err(e) => {
-                let _ = writeln!(std::io::stderr(), "Failed to clone: {}", e);
+    pub fn clone(url: &str, destination: &Path, branch: &str, overwrite: bool) -> Result<(), git2::Error> {
+        if overwrite && Path::new(destination).exists() {
+            match std::fs::remove_dir_all(destination.clone()) {
+                Ok(_) => println!("Removed old package directory"),
+                Err(e) => {
+                    let _ = writeln!(
+                        std::io::stderr(),
+                        "Failed to remove old package directory: {}",
+                        e
+                    );
+                }
             }
+        }
+        // Initialize a new RepoBuilder and configure it
+        let mut builder = RepoBuilder::new();
+        builder.branch(branch);
+
+        // Attempt to clone the repository
+        match builder.clone(url, destination) {
+            Ok(_) => {
+                println!("Successfully cloned {} into {}", url, destination.display());
+                Ok(())
+            },
+            Err(e) => {
+                eprintln!("Failed to clone: {}", e);
+                Err(e)
+            },
         }
     }
 }
