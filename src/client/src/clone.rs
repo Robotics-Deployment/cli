@@ -28,7 +28,6 @@ pub mod clone {
                 Ok(())
             },
             Err(e) => {
-                eprintln!("Failed to clone: {}", e);
                 Err(Error::new(
                     ErrorKind::BrokenPipe,
                     format!("Failed to clone: {}", e),

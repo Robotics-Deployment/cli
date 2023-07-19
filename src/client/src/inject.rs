@@ -1,5 +1,7 @@
 pub mod inject {
     use crate::clone::clone;
+    use fs_extra::dir::copy;
+    use fs_extra::dir::CopyOptions;
     use std::env;
     use std::fs::File;
     use std::io::{BufReader, Error, ErrorKind, Result};
@@ -143,9 +145,18 @@ pub mod inject {
         let package_folder = find_package_folder(&source)?;
         let source_path = construct_file_path(&package_folder, "docker");
         let destination_path = construct_file_path(destination, "docker");
+        std::fs::create_dir_all(&destination_path)?;
 
-        std::fs::copy(source_path, destination_path)?;
+        let mut options = CopyOptions::new(); // Initialize with default values
+        options.overwrite = true; // Replace the content of the destination directory
 
+        match copy(source_path, destination, &options) {
+            Ok(_) => println!("Directory copied successfully."),
+            Err(e) => return Err(Error::new(
+                ErrorKind::InvalidData,
+                format!("Failed to copy directory: {}", e)
+            ))
+        }
         Ok(())
     }
 

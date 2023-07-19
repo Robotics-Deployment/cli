@@ -19,8 +19,8 @@
                     "kind": "bin"
                 }
             },
-            "args": ["clone"],
-            "cwd": "${workspaceFolder}"
+            "args": ["inject"],
+            "cwd": "${workspaceFolder}/package/package"
         },
         {
             "type": "lldb",

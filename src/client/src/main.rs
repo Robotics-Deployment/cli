@@ -61,13 +61,13 @@ fn main() {
         Some(("clone", c)) => {
             let url = c.get_one::<String>("url").unwrap();
             let branch = c.get_one::<String>("language").unwrap();
-
+            let path = default_path.join("package");
             println!("Cloning...");
             if c.get_flag("overwrite") {
                 println!("Overwriting...");
             }
 
-            match clone::clone::clone(url, &default_path, &branch, c.get_flag("overwrite")) {
+            match clone::clone::clone(url, &path, &branch, c.get_flag("overwrite")) {
                 Ok(_) => println!("Clone successful"),
                 Err(e) => eprintln!("Clone error: {:?}", e),
             }
