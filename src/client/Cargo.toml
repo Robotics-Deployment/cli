@@ -6,3 +6,5 @@ edition = "2021"
 [dependencies]
 git2 = { version = "^0.17" }
 clap = { version = "^4.3.0", features = ["derive"] }
+xml-rs = "^0.8.15"
+walkdir = "^2.3.3"

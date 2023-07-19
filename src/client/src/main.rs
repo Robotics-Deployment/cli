@@ -1,18 +1,22 @@
 mod clone;
+mod inject;
 mod tests;
 
 use clap::{builder::PossibleValue, Arg, ArgAction, Command};
 use std::env;
 
 fn main() {
-    let url = "https://github.com/Robotics-Deployment/template.git";
+    let default_url: &str = "https://github.com/Robotics-Deployment/template.git";
+    let default_path: std::path::PathBuf =
+        env::current_dir().expect("Failed to get current directory");
 
     let m = Command::new("Robotics Deployment CLI")
         .author("Deniz Hofmeister, deniz@roboticsdeployment.com")
         .version("0.1.0")
-        .about("A CLI for ROS2-containerized building, testing and deployment")
+        .about("A CLI for ROS2-containerized compiling, testing and deployment")
         .after_help("build, run and test locally or on a remote machine")
         .subcommands([
+            // CLONE
             Command::new("clone")
                 .about("Git clone the dockerized ROS2 [Python/C++] template package")
                 .arg(
@@ -29,41 +33,58 @@ fn main() {
                             PossibleValue::new("python").help("Python Package Template"),
                             PossibleValue::new("cpp").help("C++ Package Template"),
                         ])
-                        .default_value("cpp"))
-                .arg(
-                    Arg::new("url")
-                        .long("url")
-                        .default_value(url)),
+                        .default_value("cpp"),
+                )
+                .arg(Arg::new("url").long("url").default_value(default_url)),
+            // INJECT
+            Command::new("inject").arg(Arg::new("url").long("url").default_value(default_url)),
+            // BUILD
             Command::new("build")
-            .about("Compile the the package in the docker containers")
-            .arg(
-                Arg::new("remote")
-                    .long("remote")
-                    .help("Build on a remote machine")
-                    .action(ArgAction::SetTrue),
-            ),
-            Command::new("run")
-            .about("Run the package"),
-            Command::new("test")
-                .about("Colcon test"),
-                Command::new("scan")
-                    .about("Vulnerabilities scan")
-                ])
+                .about("Compile the the package in the docker containers")
+                .arg(
+                    Arg::new("remote")
+                        .long("remote")
+                        .help("Build on a remote machine")
+                        .action(ArgAction::SetTrue),
+                ),
+            // RUN
+            Command::new("run").about("Run the package"),
+            // TEST
+            Command::new("test").about("Colcon test"),
+            // SCAN
+            Command::new("scan").about("Vulnerabilities scan"),
+        ])
         .get_matches();
 
     match m.subcommand() {
+        // CLONE
         Some(("clone", c)) => {
-                let branch = c.get_one::<String>("language").unwrap();
-                println!("Cloning {} package...", branch);
-                if c.get_flag("overwrite") {
-                    println!("Overwriting...");
-                }
-                
-                let path = env::current_dir().expect("Failed to get current directory");
-                let package = path.join("package");
-                let _ = clone::clone::clone(url, &package, &branch, c.get_flag("overwrite"));
+            let url = c.get_one::<String>("url").unwrap();
+            let branch = c.get_one::<String>("language").unwrap();
+
+            println!("Cloning...");
+            if c.get_flag("overwrite") {
+                println!("Overwriting...");
+            }
+
+            match clone::clone::clone(url, &default_path, &branch, c.get_flag("overwrite")) {
+                Ok(_) => println!("Clone successful"),
+                Err(e) => eprintln!("Clone error: {:?}", e),
+            }
         }
 
+        // INJECT
+        Some(("inject", c)) => {
+            println!("Injecting...");
+            let url = c.get_one::<String>("url").unwrap();
+
+            match inject::inject::inject(&url) {
+                Ok(_) => println!("Injection successful"),
+                Err(e) => eprintln!("Injection error: {:?}", e),
+            }
+        }
+
+        // TODO: Implement
         Some(("build", c)) => {
             if c.get_flag("remote") {
                 println!("Building on remote machine...");
@@ -77,6 +98,6 @@ fn main() {
         Some(("test", _)) => {
             println!("Testing...");
         }
-        _ => unreachable!(),
+        _ => {},
     }
 }
