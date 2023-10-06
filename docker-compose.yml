@@ -1,0 +1,7 @@
+services:
+  rdcli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: robotics-deployment:cli
+    container_name: rdcli

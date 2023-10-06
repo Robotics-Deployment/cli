@@ -1,0 +1,5 @@
+[registries]
+space-crates = { index = "sparse+https://crates.pkg.jetbrains.space/roboticsdeployment/p/main/crates/" }
+
+[unstable]
+registry-auth = true
