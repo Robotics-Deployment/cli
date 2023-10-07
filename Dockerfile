@@ -20,8 +20,8 @@ RUN apt-get update && \
     g++-aarch64-linux-gnu \
     libc6-dev-arm64-cross \
     gdb  \
-    pkg-config  \
-    git  \
+    libssl-dev \
+    pkg-config \
     ca-certificates  \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get autoremove -y \
@@ -46,9 +46,12 @@ ENV CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=x86_64-linux-gnu-gcc \
 RUN rustup target add aarch64-unknown-linux-gnu
 RUN rustup toolchain install stable-aarch64-unknown-linux-gnu
 
-ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc \
-    CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc \
-    CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++
+ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
+ENV CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc
+ENV CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++
+ENV AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_LIB_DIR=/usr/lib/aarch64-linux-gnu
+ENV AARCH64_UNKNOWN_LINUX_GNU_OPENSSL_INCLUDE_DIR=/usr/include
+
 
 COPY rdcli /opt/rdcli
 WORKDIR /opt/rdcli
