@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Start containers
+      run: docker-compose -f "docker-compose.yml" up -d --build
+
+    - name: Build x86_64
+      run: docker exec rdcli cargo build --release --target x86_64-unknown-linux-gnu
+
+    - name: Build Aarch64
+      run: docker exec rdcli cargo build --release --target aarch64-unknown-linux-gnu
+
+    - name: Stop Docker Compose services
+      run: docker-compose -f docker-compose.yml down
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: rdcli
+        path: |
+          rdcli/target/x86_64-unknown-linux-gnu/release/rdcli
+          rdcli/target/aarch64-unknown-linux-gnu/release/rdcli
