@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         - IMAGE=rust:latest
-    image: robotics-deployment:cli-amd64
+    image: ghcr.io/robotics-deployment/cli:amd64
     container_name: rdcli-amd64
     volumes:
       - ./rdcli:/opt/rdcli
@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile
       args:
         - IMAGE=arm64v8/rust:latest
-    image: robotics-deployment:cli-arm64
+    image: ghcr.io/robotics-deployment/cli:arm64
     container_name: rdcli-arm64
     volumes:
       - ./rdcli:/opt/rdcli
